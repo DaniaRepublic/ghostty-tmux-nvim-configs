@@ -1,1 +1,1 @@
-# ghostty-tmux-nvim-configs
+# My ghostty, tmux and nvim configs symlinked under one repo.
