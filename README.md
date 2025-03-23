@@ -1,0 +1,1 @@
+# ghostty-tmux-nvim-configs
