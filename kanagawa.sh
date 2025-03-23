@@ -1,0 +1,1 @@
+/Users/markinivan/.tmux/plugins/tmux-kanagawa/scripts/kanagawa.sh
