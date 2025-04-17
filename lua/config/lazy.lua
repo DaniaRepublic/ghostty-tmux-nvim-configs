@@ -19,7 +19,8 @@ require("lazy").setup({
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
     { "echasnovski/mini.animate", enabled = false },
-
+    { import = "lazyvim.plugins.extras.lang.clangd" },
+    { import = "lazyvim.plugins.extras.dap.core" },
     -- import/override with your plugins
     { import = "lazyvim.plugins.extras.lang.typescript" },
     { import = "lazyvim.plugins.extras.lang.json" },
@@ -56,28 +57,16 @@ require("lazy").setup({
   },
 })
 
-require("conform").setup({
-  format_on_save = {
-    timeout_ms = 500,
-    lsp_fallback = true,
-  },
-  formatters_by_ft = {
-    cpp = { "clang_format" },
-  },
-  formatters = {
-    clang_format = {
-      prepend_args = { "--style=file", "--fallback-style=LLVM" },
-    },
-  },
-})
-
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", {})
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", {})
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", {})
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineHint", {})
 vim.api.nvim_set_hl(0, "@string.special.url", {})
 vim.api.nvim_set_hl(0, "Underlined", {})
+vim.opt.cursorline = true
+vim.api.nvim_set_hl(0, "CursorLine", { bg = "#282727" })
 
+-- removes theme mismatch artifact from status line
 local function get_lualine_colors()
   local lualine = require("lualine")
   local theme = lualine.get_config().options.theme

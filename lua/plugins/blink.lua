@@ -5,13 +5,6 @@ return {
   ---@module 'blink.cmp'
   ---@type blink.cmp.Config
   opts = {
-    snippets = {
-      expand = function(snippet)
-        -- Remove text between parentheses (adjust the pattern as needed)
-        local modified_snippet = snippet:gsub("%b()", "(${1})")
-        vim.snippet.expand(modified_snippet)
-      end,
-    },
     completion = {
       accept = {
         -- experimental auto-brackets support

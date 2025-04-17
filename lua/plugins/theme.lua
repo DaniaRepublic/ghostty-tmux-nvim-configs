@@ -19,7 +19,16 @@ return {
         terminalColors = true, -- define vim.g.terminal_color_{0,17}
         colors = { -- add/modify theme and palette colors
           palette = {},
-          theme = { wave = {}, lotus = {}, dragon = {}, all = {} },
+          theme = {
+            wave = {},
+            lotus = {},
+            dragon = {
+              ui = {
+                bg_p1 = "#181616",
+              },
+            },
+            all = {},
+          },
         },
         overrides = function(colors) -- add/modify highlights
           return {}
@@ -27,7 +36,7 @@ return {
         theme = "dragon", -- Load "wave" theme when 'background' option is not set
         background = { -- map the value of 'background' option to a theme
           dark = "dragon", -- try "dragon" !
-          light = "lotus",
+          light = "dragon",
         },
       })
 

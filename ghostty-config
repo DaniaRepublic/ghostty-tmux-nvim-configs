@@ -1,10 +1,12 @@
-theme = Kanagawa Dragon 
+# font-family = "0xProto Nerd Font"
+theme = Kanagawa Dragon
 shell-integration-features = no-cursor
 cursor-style = bar
 cursor-style-blink = false
+mouse-hide-while-typing = true
 font-size = 14.5
+font-feature = -calt
 keybind = global:cmd+grave_accent=toggle_quick_terminal
 # this configures tab switching for tmux
 keybind = cmd+alt+left=text:\x02p
 keybind = cmd+alt+right=text:\x02n
-# custom-shader = ghostty-shaders/drunkard.glsl

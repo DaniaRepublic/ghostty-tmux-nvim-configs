@@ -42,8 +42,8 @@ main() {
   show_military=$(get_tmux_option "@kanagawa-military-time" false)
   timezone=$(get_tmux_option "@kanagawa-set-timezone" "")
   show_timezone=$(get_tmux_option "@kanagawa-show-timezone" true)
-  show_left_sep=$(get_tmux_option "@kanagawa-show-left-sep" ])   # )
-  show_right_sep=$(get_tmux_option "@kanagawa-show-right-sep" [) # )
+  show_left_sep=$(get_tmux_option "@kanagawa-show-left-sep" "]")   # )
+  show_right_sep=$(get_tmux_option "@kanagawa-show-right-sep" "[") # )
   show_border_contrast=$(get_tmux_option "@kanagawa-border-contrast" false)
   show_day_month=$(get_tmux_option "@kanagawa-day-month" false)
   show_refresh=$(get_tmux_option "@kanagawa-refresh-rate" 5)
@@ -51,7 +51,7 @@ main() {
   time_format=$(get_tmux_option "@kanagawa-time-format" "")
   show_ssh_session_port=$(get_tmux_option "@kanagawa-show-ssh-session-port" false)
   IFS=' ' read -r -a plugins <<<$(get_tmux_option "@kanagawa-plugins" "battery network weather")
-  show_empty_plugins=$(get_tmux_option "@kanagawa-show-empty-plugins" true)
+  show_empty_plugins=$(get_tmux_option "@kanagawa-show-empty-plugins" false)
 
   # Handle left icon configuration
   case $left_icon in
@@ -151,7 +151,7 @@ main() {
   tmux set-option -g message-style "bg=${gray},fg=${white}"
 
   # status bar
-  tmux set-option -g status-style "bg=${!status_bg},fg=${white}"
+  tmux set-option -g status-style "bg=${dark_gray},fg=${white}"
 
   # Handle left icon margin
   icon_mg_r=""
@@ -211,9 +211,9 @@ main() {
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-gpu-power-draw-colors" "green dark_gray")
       script="#($current_dir/gpu_power.sh)"
 
-      #    elif [ $plugin = "cpu-usage" ]; then
-      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-cpu-usage-colors" "orange dark_gray")
-      #      script="#($current_dir/cpu_info.sh)"
+    elif [ $plugin = "cpu-usage" ]; then
+      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-cpu-usage-colors" "dark_gray white")
+      script="#($current_dir/cpu_info.sh)"
 
     elif [ $plugin = "ram-usage" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-ram-usage-colors" "cyan dark_gray")
@@ -317,14 +317,14 @@ main() {
 
   # Window option
   if $show_powerline; then
-    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${gray}]${right_sep}#[fg=${white},bg=${gray}] #I #W${current_flags} #[fg=${white},bg=${gray}]${left_sep}"
+    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_gray}]${right_sep}#[fg=${white},bg=${dark_gray}] #I #W${current_flags} #[fg=${white},bg=${dark_gray}]${left_sep}"
   else
-    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_purple}] #I #W${current_flags} "
+    tmux set-window-option -g window-status-current-format "#[fg=${white},bg=${dark_gray}] #I #W${current_flags} "
   fi
 
   tmux set-window-option -g window-style "fg=${white},bg=${dark_gray}"
 
-  tmux set-window-option -g window-status-format "#[fg=${gray}]#[bg=${gray}]${right_sep}#[fg=${white}]#[bg=${gray}] #I #W${flags} #[fg=${gray}]#[bg=${gray}]${left_sep}"
+  tmux set-window-option -g window-status-format "#[fg=${dark_gray}]#[bg=${dark_gray}]${right_sep}#[fg=${white}]#[bg=${dark_gray}] #I #W${flags} #[fg=${dark_gray}]#[bg=${dark_gray}]${left_sep}"
   tmux set-window-option -g window-status-activity-style "bold"
   tmux set-window-option -g window-status-bell-style "bold"
 }
