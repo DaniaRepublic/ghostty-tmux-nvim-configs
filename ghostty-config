@@ -4,7 +4,7 @@ shell-integration-features = no-cursor
 cursor-style = bar
 cursor-style-blink = false
 mouse-hide-while-typing = true
-font-size = 14.5
+font-size = 15.5
 font-feature = -calt
 keybind = global:cmd+grave_accent=toggle_quick_terminal
 # this configures tab switching for tmux
