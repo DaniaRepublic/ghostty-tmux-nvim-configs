@@ -1,12 +1,20 @@
 # font-family = "0xProto Nerd Font"
 theme = Kanagawa Dragon
+maximize = true
 shell-integration-features = no-cursor
 cursor-style = bar
 cursor-style-blink = false
 mouse-hide-while-typing = true
-font-size = 15.5
+font-size = 17.5
 font-feature = -calt
 keybind = global:cmd+grave_accent=toggle_quick_terminal
+confirm-close-surface = false
+# bars, tabs, ui
+window-decoration = none
 # this configures tab switching for tmux
 keybind = cmd+alt+left=text:\x02p
 keybind = cmd+alt+right=text:\x02n
+keybind = cmd+b=text:\x02
+keybind = cmd+t=text:\x02c
+keybind = cmd+w=text:\x02&
+keybind = ctrl+[=text:\x02[

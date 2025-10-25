@@ -21,7 +21,7 @@ vim.keymap.set("n", "<leader>t", function()
   end
   vim.cmd("split | terminal")
   vim.cmd("startinsert")
-end, { desc = "Toggle terminal", silent = true })
+end, { noremap = true, silent = true, nowait = true, desc = "Toggle terminal" })
 
 -- run make
 vim.keymap.set("n", "<leader>r", "", { desc = "run", silent = true })

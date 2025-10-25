@@ -18,7 +18,7 @@ require("lazy").setup({
   spec = {
     -- add LazyVim and import its plugins
     { "LazyVim/LazyVim", import = "lazyvim.plugins" },
-    { "echasnovski/mini.animate", enabled = false },
+    { "nvim-mini/mini.animate", enabled = false },
     { import = "lazyvim.plugins.extras.lang.clangd" },
     { import = "lazyvim.plugins.extras.dap.core" },
     -- import/override with your plugins

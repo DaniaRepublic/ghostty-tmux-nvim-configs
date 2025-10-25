@@ -7,11 +7,11 @@ return {
         swift = { "swiftformat" },
       },
       -- Optional: Customize swiftformat args if needed (e.g., for specific rules)
-      -- formatters = {
-      --   swiftformat = {
-      --     prepend_args = { "--indent", "4" },
-      --   },
-      -- },
+      formatters = {
+        swiftformat = {
+          prepend_args = { "--indent", "4" },
+        },
+      },
     },
   },
 }

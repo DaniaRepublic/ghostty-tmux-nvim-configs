@@ -1,13 +1,16 @@
 return {
   "nvim-treesitter/nvim-treesitter",
   build = ":TSUpdate",
-  opts = {
-    ensure_installed = { "swift", "lua", "vim", "vimdoc" }, -- Include Swift and other useful parsers
-    sync_install = false, -- Install parsers asynchronously (recommended for LazyVim)
-    auto_install = true, -- Automatically install parsers for detected filetypes
-    ignore_install = {}, -- List of parsers to ignore (empty by default)
-    modules = {}, -- Required field, can be empty (used for modular Treesitter features)
-    highlight = { enable = true }, -- Enable syntax highlighting
-    indent = { enable = true }, -- Enable Treesitter-based indentation
-  },
+  opts = function(_, opts)
+    -- Add swift to ensure_installed
+    if type(opts.ensure_installed) == "table" then
+      vim.list_extend(opts.ensure_installed, { "swift" })
+    end
+    -- Disable indent for swift
+    if type(opts.indent) == "table" then
+      opts.indent.disable = opts.indent.disable or {}
+      vim.list_extend(opts.indent.disable, { "swift" })
+    end
+    return opts
+  end,
 }
