@@ -37,8 +37,8 @@ require("lazy").setup({
     -- version = "*", -- try installing the latest stable version for plugins that support semver
   },
   checker = {
-    enabled = true, -- check for plugin updates periodically
-    notify = false, -- notify on update
+    enabled = false, -- check for plugin updates periodically
+    notify = true, -- notify on update
   }, -- automatically check for plugin updates
   performance = {
     rtp = {
@@ -57,6 +57,12 @@ require("lazy").setup({
   },
 })
 
+-- remove underlines
+local read_hl = vim.api.nvim_get_hl(0, { name = "LspReferenceRead" })
+--- @type vim.api.keyset.highlight
+local write_hl = read_hl
+write_hl.underline = nil
+vim.api.nvim_set_hl(0, "LspReferenceWrite", write_hl)
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineError", {})
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineWarn", {})
 vim.api.nvim_set_hl(0, "DiagnosticUnderlineInfo", {})

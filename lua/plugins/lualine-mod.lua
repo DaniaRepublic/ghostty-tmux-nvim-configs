@@ -45,7 +45,7 @@ return {
         },
         lualine_z = {},
       },
-      extensions = { "neo-tree", "lazy", "fzf" },
+      extensions = { "neo-tree", "lazy" },
     }
 
     -- do not add trouble symbols if aerial is enabled
