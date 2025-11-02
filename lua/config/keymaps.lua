@@ -12,16 +12,45 @@ vim.keymap.set("n", "<leader>ma", ":%y<CR>", { noremap = true, silent = true, de
 vim.keymap.set("n", "<leader>fs", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
 vim.keymap.set("x", "<leader>p", [["_dP]], { noremap = true, silent = true, desc = "Discard deleted by paste" })
 vim.keymap.set("n", "<leader>t", function()
+  local term_buf = nil
+  local term_win = nil
+
+  -- Find a terminal buffer with a running job, using /bin/zsh, and check if it's visible
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     if vim.bo[buf].buftype == "terminal" and vim.api.nvim_buf_is_loaded(buf) then
-      vim.cmd("split | buffer " .. buf)
-      vim.cmd("startinsert")
-      return
+      local name = vim.api.nvim_buf_get_name(buf)
+      if name:match(":/bin/zsh$") then
+        local job_id = vim.api.nvim_buf_get_var(buf, "terminal_job_id")
+        if job_id > 0 and vim.fn.jobwait({ job_id }, 0)[1] == -1 then
+          term_buf = buf
+          for _, win in ipairs(vim.api.nvim_list_wins()) do
+            if vim.api.nvim_win_get_buf(win) == buf then
+              term_win = win
+              break
+            end
+          end
+          if term_win then
+            break
+          end -- Prioritize a visible one
+        end
+      end
     end
   end
-  vim.cmd("split | terminal")
-  vim.cmd("startinsert")
-end, { noremap = true, silent = true, nowait = true, desc = "Toggle terminal" })
+
+  if term_win then
+    -- Terminal is visible: switch to its window and hide
+    vim.api.nvim_set_current_win(term_win)
+    vim.cmd("hide")
+  else
+    -- Terminal not visible: open in split (use existing running buf if available, else create new)
+    if term_buf then
+      vim.cmd("split | buffer " .. term_buf)
+    else
+      vim.cmd("split | terminal")
+    end
+    vim.cmd("startinsert")
+  end
+end, { noremap = true, silent = true, desc = "Toggle terminal" })
 
 -- run make
 vim.keymap.set("n", "<leader>r", "", { desc = "run", silent = true })
