@@ -1,15 +1,17 @@
 return {
   {
     "stevearc/conform.nvim",
-    optional = true,
     opts = {
+      -- 1. Assign the formatter to the filetype
       formatters_by_ft = {
-        swift = { "swiftformat" },
+        rust = { "rustfmt" },
+        solidity = { "prettier" },
       },
-      -- Optional: Customize swiftformat args if needed (e.g., for specific rules)
+      -- 2. Customize the rustfmt command to use nightly
       formatters = {
-        swiftformat = {
-          prepend_args = { "--indent", "4" },
+        rustfmt = {
+          command = "rustup",
+          args = { "run", "nightly", "rustfmt", "--emit=stdout" },
         },
       },
     },

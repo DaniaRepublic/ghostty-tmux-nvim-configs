@@ -30,6 +30,22 @@ return {
       -- with blink.compat
       compat = {},
       default = { "lsp", "path", "buffer" },
+      providers = {
+        lsp = {
+          -- 1. Stop LSP from hiding buffer completions.
+          -- Clearing fallbacks ensures both LSP and Buffer show simultaneously.
+          fallbacks = {},
+        },
+        buffer = {
+          -- 2. Trigger buffer completions earlier.
+          -- Lowering this to 2 (or 1) forces it to suggest words almost immediately.
+          min_keyword_length = 2,
+
+          -- Optional: If LSP suggestions are burying your buffer words at
+          -- the bottom of the list, you can increase the buffer's priority score.
+          -- score_offset = 3,
+        },
+      },
     },
   },
   ---@param opts blink.cmp.Config | { sources: { compat: string[] } }

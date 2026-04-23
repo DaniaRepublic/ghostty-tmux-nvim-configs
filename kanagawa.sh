@@ -175,98 +175,104 @@ main() {
         script="${script} not found!"
       fi
 
-    elif [ $plugin = "cwd" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-cwd-colors" "dark_gray white")
-      tmux set-option -g status-right-length 250
-      script="#($current_dir/cwd.sh)"
-
-    elif [ $plugin = "fossil" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-fossil-colors" "green dark_gray")
-      tmux set-option -g status-right-length 250
-      script="#($current_dir/fossil.sh)"
-
-    elif [ $plugin = "git" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-git-colors" "green dark_gray")
-      tmux set-option -g status-right-length 250
-      script="#($current_dir/git.sh)"
-
-    elif [ $plugin = "hg" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-hg-colors" "green dark_gray")
-      tmux set-option -g status-right-length 250
-      script="#($current_dir/hg.sh)"
+      #    elif [ $plugin = "cwd" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-cwd-colors" "dark_gray white")
+      #      tmux set-option -g status-right-length 250
+      #      script="#($current_dir/cwd.sh)"
+      #
+      #    elif [ $plugin = "fossil" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-fossil-colors" "green dark_gray")
+      #      tmux set-option -g status-right-length 250
+      #      script="#($current_dir/fossil.sh)"
+      #
+      #    elif [ $plugin = "git" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-git-colors" "green dark_gray")
+      #      tmux set-option -g status-right-length 250
+      #      script="#($current_dir/git.sh)"
+      #
+      #    elif [ $plugin = "hg" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-hg-colors" "green dark_gray")
+      #      tmux set-option -g status-right-length 250
+      #      script="#($current_dir/hg.sh)"
 
       #    elif [ $plugin = "battery" ]; then
       #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-battery-colors" "pink dark_gray")
       #      script="#($current_dir/battery.sh)"
 
-    elif [ $plugin = "gpu-usage" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-gpu-usage-colors" "pink dark_gray")
-      script="#($current_dir/gpu_usage.sh)"
-
-    elif [ $plugin = "gpu-ram-usage" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-gpu-ram-usage-colors" "cyan dark_gray")
-      script="#($current_dir/gpu_ram_info.sh)"
-
-    elif [ $plugin = "gpu-power-draw" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-gpu-power-draw-colors" "green dark_gray")
-      script="#($current_dir/gpu_power.sh)"
+      #    elif [ $plugin = "gpu-usage" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-gpu-usage-colors" "pink dark_gray")
+      #      script="#($current_dir/gpu_usage.sh)"
+      #
+      #    elif [ $plugin = "gpu-ram-usage" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-gpu-ram-usage-colors" "cyan dark_gray")
+      #      script="#($current_dir/gpu_ram_info.sh)"
+      #
+      #    elif [ $plugin = "gpu-power-draw" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-gpu-power-draw-colors" "green dark_gray")
+      #      script="#($current_dir/gpu_power.sh)"
+      #
 
     elif [ $plugin = "cpu-usage" ]; then
       IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-cpu-usage-colors" "dark_gray white")
       script="#($current_dir/cpu_info.sh)"
 
-    elif [ $plugin = "ram-usage" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-ram-usage-colors" "cyan dark_gray")
-      script="#($current_dir/ram_info.sh)"
+      # one-line fix for the bg=#181616] artifact
+      tmux set-option -ga status-right "#[fg=${!colors[1]},bg=${!colors[0]}] $script "
+      continue
 
-    elif [ $plugin = "tmux-ram-usage" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-tmux-ram-usage-colors" "cyan dark_gray")
-      script="#($current_dir/tmux_ram_info.sh)"
-
-    elif [ $plugin = "network" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-network-colors" "cyan dark_gray")
-      script="#($current_dir/network.sh)"
-
-    elif [ $plugin = "network-bandwidth" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-network-bandwidth-colors" "cyan dark_gray")
-      tmux set-option -g status-right-length 250
-      script="#($current_dir/network_bandwidth.sh)"
-
-    elif [ $plugin = "network-ping" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-network-ping-colors" "cyan dark_gray")
-      script="#($current_dir/network_ping.sh)"
-
-    elif [ $plugin = "network-vpn" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-network-vpn-colors" "cyan dark_gray")
-      script="#($current_dir/network_vpn.sh)"
-
-    elif [ $plugin = "attached-clients" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-attached-clients-colors" "cyan dark_gray")
-      script="#($current_dir/attached_clients.sh)"
-
-    elif [ $plugin = "mpc" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-mpc-colors" "green dark_gray")
-      script="#($current_dir/mpc.sh)"
-
-    elif [ $plugin = "spotify-tui" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-spotify-tui-colors" "green dark_gray")
-      script="#($current_dir/spotify-tui.sh)"
-
-    elif [ $plugin = "playerctl" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-playerctl-colors" "green dark_gray")
-      script="#($current_dir/playerctl.sh)"
-
-    elif [ $plugin = "kubernetes-context" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-kubernetes-context-colors" "cyan dark_gray")
-      script="#($current_dir/kubernetes_context.sh $eks_hide_arn $eks_extract_account $hide_kubernetes_user $show_kubernetes_context_label)"
-
-    elif [ $plugin = "terraform" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-terraform-colors" "light_purple dark_gray")
-      script="#($current_dir/terraform.sh $terraform_label)"
-
-    elif [ $plugin = "continuum" ]; then
-      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-continuum-colors" "cyan dark_gray")
-      script="#($current_dir/continuum.sh)"
+      #
+      #    elif [ $plugin = "ram-usage" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-ram-usage-colors" "cyan dark_gray")
+      #      script="#($current_dir/ram_info.sh)"
+      #
+      #    elif [ $plugin = "tmux-ram-usage" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-tmux-ram-usage-colors" "cyan dark_gray")
+      #      script="#($current_dir/tmux_ram_info.sh)"
+      #
+      #    elif [ $plugin = "network" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-network-colors" "cyan dark_gray")
+      #      script="#($current_dir/network.sh)"
+      #
+      #    elif [ $plugin = "network-bandwidth" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-network-bandwidth-colors" "cyan dark_gray")
+      #      tmux set-option -g status-right-length 250
+      #      script="#($current_dir/network_bandwidth.sh)"
+      #
+      #    elif [ $plugin = "network-ping" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-network-ping-colors" "cyan dark_gray")
+      #      script="#($current_dir/network_ping.sh)"
+      #
+      #    elif [ $plugin = "network-vpn" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-network-vpn-colors" "cyan dark_gray")
+      #      script="#($current_dir/network_vpn.sh)"
+      #
+      #    elif [ $plugin = "attached-clients" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-attached-clients-colors" "cyan dark_gray")
+      #      script="#($current_dir/attached_clients.sh)"
+      #
+      #    elif [ $plugin = "mpc" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-mpc-colors" "green dark_gray")
+      #      script="#($current_dir/mpc.sh)"
+      #
+      #    elif [ $plugin = "spotify-tui" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-spotify-tui-colors" "green dark_gray")
+      #      script="#($current_dir/spotify-tui.sh)"
+      #
+      #    elif [ $plugin = "playerctl" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-playerctl-colors" "green dark_gray")
+      #      script="#($current_dir/playerctl.sh)"
+      #
+      #    elif [ $plugin = "kubernetes-context" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-kubernetes-context-colors" "cyan dark_gray")
+      #      script="#($current_dir/kubernetes_context.sh $eks_hide_arn $eks_extract_account $hide_kubernetes_user $show_kubernetes_context_label)"
+      #
+      #    elif [ $plugin = "terraform" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-terraform-colors" "light_purple dark_gray")
+      #      script="#($current_dir/terraform.sh $terraform_label)"
+      #
+      #    elif [ $plugin = "continuum" ]; then
+      #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-continuum-colors" "cyan dark_gray")
+      #      script="#($current_dir/continuum.sh)"
 
       #    elif [ $plugin = "weather" ]; then
       #      IFS=' ' read -r -a colors <<<$(get_tmux_option "@kanagawa-weather-colors" "orange dark_gray")

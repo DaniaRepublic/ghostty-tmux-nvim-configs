@@ -9,8 +9,10 @@ font-size = 17.5
 font-feature = -calt
 keybind = global:cmd+grave_accent=toggle_quick_terminal
 confirm-close-surface = false
+clipboard-write = allow
 # bars, tabs, ui
 window-decoration = none
+macos-icon = retro
 # this configures tab switching for tmux
 keybind = cmd+alt+left=text:\x02p
 keybind = cmd+alt+right=text:\x02n

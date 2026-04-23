@@ -20,3 +20,32 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.smartindent = true -- Auto-indent after {, deindent } properly
   end,
 })
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = { "solidity" },
+  callback = function()
+    vim.opt_local.shiftwidth = 4
+    vim.opt_local.tabstop = 4
+    vim.opt_local.softtabstop = 4
+    vim.opt_local.expandtab = true
+    -- Tell Neovim about /// comments
+    vim.opt_local.comments:prepend(":///")
+
+    -- Ensure Neovim automatically continues comments on `<Enter>` (r) and `o`/`O` (o)
+    vim.opt_local.formatoptions:append("ro")
+  end,
+})
+
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "*",
+  callback = function()
+    -- Link Tree-sitter note/todo groups to the normal 'Comment' group
+    vim.api.nvim_set_hl(0, "@comment.note", { link = "Comment" })
+    vim.api.nvim_set_hl(0, "@comment.todo", { link = "Comment" })
+    vim.api.nvim_set_hl(0, "@comment.warning", { link = "Comment" })
+    vim.api.nvim_set_hl(0, "@comment.error", { link = "Comment" })
+
+    -- Also link the standard Vim 'Todo' group
+    vim.api.nvim_set_hl(0, "Todo", { link = "Comment" })
+  end,
+})
