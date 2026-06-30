@@ -15,7 +15,7 @@ sudo apt-get update
 sudo apt-get install -y \
   git curl wget unzip tar gzip build-essential \
   tmux ncurses-term \
-  ripgrep fd-find fzf \
+  ripgrep fd-find \
   python3 python3-pip python3-venv
 
 # 2) fd shim (Ubuntu installs the binary as 'fdfind')
@@ -24,6 +24,15 @@ if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then
   ln -sfn "$(command -v fdfind)" "$HOME/.local/bin/fd"
 fi
 case ":$PATH:" in *":$HOME/.local/bin:"*) ;; *) export PATH="$HOME/.local/bin:$PATH" ;; esac
+
+# 2b) fzf from upstream — apt's 0.44.1 is too old for fzf-lua's `transform` action (needs >= 0.45)
+if [ ! -d "$HOME/.fzf" ]; then
+  git clone --depth 1 https://github.com/junegunn/fzf.git "$HOME/.fzf"
+else
+  git -C "$HOME/.fzf" pull --ff-only || true
+fi
+"$HOME/.fzf/install" --bin                              # downloads latest fzf binary to ~/.fzf/bin (no rc edits)
+ln -sfn "$HOME/.fzf/bin/fzf" "$HOME/.local/bin/fzf"    # ~/.local/bin is already first on PATH
 
 # 3) Node.js (NodeSource LTS) — TS/JSON/Tailwind/Solidity LSPs, prettier, markdownlint,
 #    and markdown-preview's build step all need it
@@ -70,6 +79,11 @@ done
 # 6) tmux config at the XDG path (keeps TPM + plugins under ~/.config/tmux/plugins)
 log "Linking tmux config"
 mkdir -p "$HOME/.config/tmux"
+# a stray ~/.tmux.conf shadows the XDG config (tmux prefers it) — back it up so ours is used
+if [ -e "$HOME/.tmux.conf" ] && [ "$(readlink -f "$HOME/.tmux.conf" 2>/dev/null)" != "$(readlink -f "$REPO_DIR/.tmux.conf" 2>/dev/null)" ]; then
+  log "~/.tmux.conf shadows the XDG config — backing it up"
+  backup "$HOME/.tmux.conf"
+fi
 backup "$HOME/.config/tmux/tmux.conf"
 ln -sfn "$REPO_DIR/.tmux.conf" "$HOME/.config/tmux/tmux.conf"
 
@@ -82,6 +96,9 @@ fi
 export TMUX_PLUGIN_MANAGER_PATH="$HOME/.config/tmux/plugins"
 "$HOME/.config/tmux/plugins/tpm/bin/install_plugins" \
   || log "TPM headless install hiccup — start tmux and press 'Ctrl-b + I' to finish"
+if [ ! -d "$HOME/.config/tmux/plugins/tmux-kanagawa" ]; then
+  log "tmux-kanagawa not installed — open tmux and press 'Ctrl-b' then 'I', then restart tmux"
+fi
 
 # 8) Neovim plugins (headless). LSP/formatter/linter binaries install via Mason on
 #    first interactive launch (node + python are already present for that).
