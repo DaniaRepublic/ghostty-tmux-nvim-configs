@@ -8,6 +8,7 @@ mouse-hide-while-typing = true
 font-size = 17.5
 font-feature = -calt
 keybind = global:cmd+grave_accent=toggle_quick_terminal
+macos-option-as-alt = left
 confirm-close-surface = false
 clipboard-write = allow
 # bars, tabs, ui

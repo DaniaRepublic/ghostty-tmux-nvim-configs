@@ -1,11 +1,23 @@
 return {
   "nvim-neo-tree/neo-tree.nvim",
   opts = {
+    window = { position = "current" },
     filesystem = {
-      -- "disabled"  : disable neo-tree netrw hijacking entirely
-      -- "open_current" : open in current window (LazyVim default)
-      -- "open_default" : open in a split (standard default)
-      hijack_netrw_behavior = "disabled",
+      bind_to_cwd = true,
+      cwd_target = {
+        sidebar = "global",
+        current = "global",
+      },
     },
+  },
+  keys = {
+    {
+      "<leader>e",
+      function()
+        require("neo-tree.command").execute({ toggle = true, dir = vim.uv.cwd() })
+      end,
+      desc = "Explorer (cwd)",
+    },
+    { "<leader>E", false }, -- optional: disable the cwd variant since <leader>e now does that
   },
 }

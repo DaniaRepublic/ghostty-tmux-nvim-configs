@@ -11,112 +11,6 @@ vim.keymap.set("n", "<leader>md", "<C-d>", { noremap = true, silent = true, desc
 vim.keymap.set("n", "<leader>ma", ":%y<CR>", { noremap = true, silent = true, desc = "Copy all lines" })
 vim.keymap.set("n", "<leader>fs", ":w<CR>", { noremap = true, silent = true, desc = "Save file" })
 vim.keymap.set("x", "<leader>p", [["_dP]], { noremap = true, silent = true, desc = "Discard deleted by paste" })
-vim.keymap.set("n", "<leader>t", function()
-  local term_buf = nil
-  local term_win = nil
-
-  -- Find a terminal buffer with a running job, using /bin/zsh, and check if it's visible
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.bo[buf].buftype == "terminal" and vim.api.nvim_buf_is_loaded(buf) then
-      local name = vim.api.nvim_buf_get_name(buf)
-      if name:match(":/bin/zsh$") then
-        local job_id = vim.api.nvim_buf_get_var(buf, "terminal_job_id")
-        if job_id > 0 and vim.fn.jobwait({ job_id }, 0)[1] == -1 then
-          term_buf = buf
-          for _, win in ipairs(vim.api.nvim_list_wins()) do
-            if vim.api.nvim_win_get_buf(win) == buf then
-              term_win = win
-              break
-            end
-          end
-          if term_win then
-            break
-          end -- Prioritize a visible one
-        end
-      end
-    end
-  end
-
-  if term_win then
-    -- Terminal is visible: switch to its window and hide
-    vim.api.nvim_set_current_win(term_win)
-    vim.cmd("hide")
-  else
-    -- Terminal not visible: open in split (use existing running buf if available, else create new)
-    if term_buf then
-      vim.cmd("split | buffer " .. term_buf)
-    else
-      vim.cmd("split | terminal")
-    end
-    vim.cmd("startinsert")
-  end
-end, { noremap = true, silent = true, desc = "Toggle terminal" })
-
--- run make
-vim.keymap.set("n", "<leader>r", "", { desc = "run", silent = true })
-vim.keymap.set("n", "<leader>rm", function()
-  local term_buf = nil
-  local term_win = nil
-
-  -- Find a terminal buffer with a running job, using /bin/zsh, and check if it's visible
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.bo[buf].buftype == "terminal" and vim.api.nvim_buf_is_loaded(buf) then
-      local name = vim.api.nvim_buf_get_name(buf)
-      if name:match(":/bin/zsh$") then
-        local job_id = vim.api.nvim_buf_get_var(buf, "terminal_job_id")
-        if job_id > 0 and vim.fn.jobwait({ job_id }, 0)[1] == -1 then
-          term_buf = buf
-          for _, win in ipairs(vim.api.nvim_list_wins()) do
-            if vim.api.nvim_win_get_buf(win) == buf then
-              term_win = win
-              break
-            end
-          end
-          if term_win then
-            break
-          end -- Prioritize a visible one
-        end
-      end
-    end
-  end
-
-  if term_win then
-    -- Terminal is visible: switch to its window and hide
-    vim.api.nvim_set_current_win(term_win)
-    vim.cmd("hide")
-  else
-    -- Terminal not visible: open in split (use existing running buf if available, else create new)
-    if term_buf then
-      vim.cmd("split | buffer " .. term_buf)
-
-      -- Send "make" + Enter to that terminal job
-      local chan = vim.api.nvim_buf_get_var(term_buf, "terminal_job_id")
-      vim.fn.chansend(chan, "make\n")
-    else
-      vim.cmd("split | terminal")
-
-      -- Send "make" + Enter to the newly created terminal
-      local chan = vim.bo.channel
-      vim.fn.chansend(chan, "make\n")
-    end
-    vim.cmd("startinsert")
-  end
-end, { desc = "make", silent = true })
-
--- Normal mode: If in terminal buffer, pressing <Esc> goes to insert mode
-vim.keymap.set("n", "<Esc>", function()
-  if vim.bo.buftype == "terminal" then
-    vim.cmd("startinsert")
-  else
-    vim.cmd("nohlsearch")
-  end
-end, { noremap = true, silent = true })
-
--- Terminal mode: <Esc> leaves terminal mode and hides the terminal
-vim.keymap.set("t", "<Esc>", [[<C-\><C-n>:hide<CR>]], { noremap = true, silent = true })
-
--- Terminal mode: Ctrl+n to just leave terminal mode
-vim.keymap.set("t", "<C-z>", [[<C-\><C-n>]], { noremap = true, silent = true })
 
 local function quickfix()
   vim.lsp.buf.code_action({
@@ -128,3 +22,4 @@ local function quickfix()
 end
 
 vim.keymap.set("n", "<leader>qf", quickfix, { noremap = true, silent = true, desc = "Quick fix" })
+vim.keymap.set({ "n", "t" }, "<C-->", "<C-_>", { remap = true, desc = "Terminal (Root Dir)" })

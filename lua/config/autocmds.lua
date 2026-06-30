@@ -49,3 +49,14 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     vim.api.nvim_set_hl(0, "Todo", { link = "Comment" })
   end,
 })
+
+vim.api.nvim_create_autocmd("TermOpen", {
+  callback = function(args)
+    local function term_paste()
+      local reg = vim.v.register == "" and '"' or vim.v.register
+      vim.api.nvim_chan_send(vim.bo.channel, vim.fn.getreg(reg))
+    end
+    vim.keymap.set("n", "p", term_paste, { buffer = args.buf, desc = "Paste in terminal" })
+    vim.keymap.set("n", "P", term_paste, { buffer = args.buf, desc = "Paste in terminal" })
+  end,
+})

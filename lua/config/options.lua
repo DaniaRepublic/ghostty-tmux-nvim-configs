@@ -6,6 +6,7 @@ vim.opt.wrap = true
 vim.opt.number = false
 vim.opt.relativenumber = false
 vim.opt.signcolumn = "no" -- Disable the sign column
+
 vim.g.ai_cmp = false
 vim.g.lazy_check_on_startup = false -- No auto-update checks
 
